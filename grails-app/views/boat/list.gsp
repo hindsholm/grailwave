@@ -28,13 +28,13 @@
 					
 						<g:sortableColumn property="type" title="${message(code: 'boat.type.label', default: 'Type')}" />
 					
-						<g:sortableColumn property="name" title="${message(code: 'boat.name.label', default: 'Name')}" />
-					
 						<g:sortableColumn property="sailNumber" title="${message(code: 'boat.sailNumber.label', default: 'Sail Number')}" />
 					
-						<g:sortableColumn property="rating" title="${message(code: 'boat.rating.label', default: 'Rating')}" />
+						<g:sortableColumn property="comments" title="${message(code: 'boat.comments.label', default: 'Comments')}" />
 					
 						<th><g:message code="boat.fleet.label" default="Fleet" /></th>
+					
+						<g:sortableColumn property="name" title="${message(code: 'boat.name.label', default: 'Name')}" />
 					
 					</tr>
 				</thead>
@@ -46,13 +46,13 @@
 					
 						<td>${fieldValue(bean: boatInstance, field: "type")}</td>
 					
-						<td>${fieldValue(bean: boatInstance, field: "name")}</td>
-					
 						<td>${fieldValue(bean: boatInstance, field: "sailNumber")}</td>
 					
-						<td>${fieldValue(bean: boatInstance, field: "rating")}</td>
+						<td>${fieldValue(bean: boatInstance, field: "comments")}</td>
 					
 						<td>${fieldValue(bean: boatInstance, field: "fleet")}</td>
+					
+						<td>${fieldValue(bean: boatInstance, field: "name")}</td>
 					
 					</tr>
 				</g:each>

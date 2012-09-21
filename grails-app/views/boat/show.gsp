@@ -41,15 +41,6 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${boatInstance?.name}">
-				<li class="fieldcontain">
-					<span id="name-label" class="property-label"><g:message code="boat.name.label" default="Name" /></span>
-					
-						<span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${boatInstance}" field="name"/></span>
-					
-				</li>
-				</g:if>
-			
 				<g:if test="${boatInstance?.sailNumber}">
 				<li class="fieldcontain">
 					<span id="sailNumber-label" class="property-label"><g:message code="boat.sailNumber.label" default="Sail Number" /></span>
@@ -59,11 +50,11 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${boatInstance?.rating}">
+				<g:if test="${boatInstance?.comments}">
 				<li class="fieldcontain">
-					<span id="rating-label" class="property-label"><g:message code="boat.rating.label" default="Rating" /></span>
+					<span id="comments-label" class="property-label"><g:message code="boat.comments.label" default="Comments" /></span>
 					
-						<span class="property-value" aria-labelledby="rating-label"><g:fieldValue bean="${boatInstance}" field="rating"/></span>
+						<span class="property-value" aria-labelledby="comments-label"><g:fieldValue bean="${boatInstance}" field="comments"/></span>
 					
 				</li>
 				</g:if>
@@ -73,6 +64,24 @@
 					<span id="fleet-label" class="property-label"><g:message code="boat.fleet.label" default="Fleet" /></span>
 					
 						<span class="property-value" aria-labelledby="fleet-label"><g:link controller="fleet" action="show" id="${boatInstance?.fleet?.id}">${boatInstance?.fleet?.encodeAsHTML()}</g:link></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${boatInstance?.name}">
+				<li class="fieldcontain">
+					<span id="name-label" class="property-label"><g:message code="boat.name.label" default="Name" /></span>
+					
+						<span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${boatInstance}" field="name"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${boatInstance?.rating}">
+				<li class="fieldcontain">
+					<span id="rating-label" class="property-label"><g:message code="boat.rating.label" default="Rating" /></span>
+					
+						<span class="property-value" aria-labelledby="rating-label"><g:fieldValue bean="${boatInstance}" field="rating"/></span>
 					
 				</li>
 				</g:if>

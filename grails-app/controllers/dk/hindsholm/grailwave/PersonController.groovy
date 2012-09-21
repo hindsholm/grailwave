@@ -10,8 +10,8 @@ class PersonController {
         redirect(action: "list", params: params)
     }
 
-    def list() {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    def list(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
         [personInstanceList: Person.list(params), personInstanceTotal: Person.count()]
     }
 
@@ -26,14 +26,14 @@ class PersonController {
             return
         }
 
-		flash.message = message(code: 'default.created.message', args: [message(code: 'person.label', default: 'Person'), personInstance.id])
+        flash.message = message(code: 'default.created.message', args: [message(code: 'person.label', default: 'Person'), personInstance.id])
         redirect(action: "show", id: personInstance.id)
     }
 
-    def show() {
-        def personInstance = Person.get(params.id)
+    def show(Long id) {
+        def personInstance = Person.get(id)
         if (!personInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), id])
             redirect(action: "list")
             return
         }
@@ -41,10 +41,10 @@ class PersonController {
         [personInstance: personInstance]
     }
 
-    def edit() {
-        def personInstance = Person.get(params.id)
+    def edit(Long id) {
+        def personInstance = Person.get(id)
         if (!personInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), id])
             redirect(action: "list")
             return
         }
@@ -52,16 +52,15 @@ class PersonController {
         [personInstance: personInstance]
     }
 
-    def update() {
-        def personInstance = Person.get(params.id)
+    def update(Long id, Long version) {
+        def personInstance = Person.get(id)
         if (!personInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), id])
             redirect(action: "list")
             return
         }
 
-        if (params.version) {
-            def version = params.version.toLong()
+        if (version != null) {
             if (personInstance.version > version) {
                 personInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                           [message(code: 'person.label', default: 'Person')] as Object[],
@@ -78,26 +77,26 @@ class PersonController {
             return
         }
 
-		flash.message = message(code: 'default.updated.message', args: [message(code: 'person.label', default: 'Person'), personInstance.id])
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'person.label', default: 'Person'), personInstance.id])
         redirect(action: "show", id: personInstance.id)
     }
 
-    def delete() {
-        def personInstance = Person.get(params.id)
+    def delete(Long id) {
+        def personInstance = Person.get(id)
         if (!personInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), id])
             redirect(action: "list")
             return
         }
 
         try {
             personInstance.delete(flush: true)
-			flash.message = message(code: 'default.deleted.message', args: [message(code: 'person.label', default: 'Person'), params.id])
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'person.label', default: 'Person'), id])
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
-			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'person.label', default: 'Person'), params.id])
-            redirect(action: "show", id: params.id)
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'person.label', default: 'Person'), id])
+            redirect(action: "show", id: id)
         }
     }
 }

@@ -7,6 +7,7 @@ class Boat {
     String name
     String sailNumber
     double rating
+    String comments
     
     static belongsTo = [ fleet : Fleet ]
     

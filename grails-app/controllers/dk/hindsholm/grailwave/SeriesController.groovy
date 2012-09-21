@@ -10,8 +10,8 @@ class SeriesController {
         redirect(action: "list", params: params)
     }
 
-    def list() {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    def list(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
         [seriesInstanceList: Series.list(params), seriesInstanceTotal: Series.count()]
     }
 
@@ -26,14 +26,14 @@ class SeriesController {
             return
         }
 
-		flash.message = message(code: 'default.created.message', args: [message(code: 'series.label', default: 'Series'), seriesInstance.id])
+        flash.message = message(code: 'default.created.message', args: [message(code: 'series.label', default: 'Series'), seriesInstance.id])
         redirect(action: "show", id: seriesInstance.id)
     }
 
-    def show() {
-        def seriesInstance = Series.get(params.id)
+    def show(Long id) {
+        def seriesInstance = Series.get(id)
         if (!seriesInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'series.label', default: 'Series'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'series.label', default: 'Series'), id])
             redirect(action: "list")
             return
         }
@@ -41,10 +41,10 @@ class SeriesController {
         [seriesInstance: seriesInstance]
     }
 
-    def edit() {
-        def seriesInstance = Series.get(params.id)
+    def edit(Long id) {
+        def seriesInstance = Series.get(id)
         if (!seriesInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'series.label', default: 'Series'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'series.label', default: 'Series'), id])
             redirect(action: "list")
             return
         }
@@ -52,16 +52,15 @@ class SeriesController {
         [seriesInstance: seriesInstance]
     }
 
-    def update() {
-        def seriesInstance = Series.get(params.id)
+    def update(Long id, Long version) {
+        def seriesInstance = Series.get(id)
         if (!seriesInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'series.label', default: 'Series'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'series.label', default: 'Series'), id])
             redirect(action: "list")
             return
         }
 
-        if (params.version) {
-            def version = params.version.toLong()
+        if (version != null) {
             if (seriesInstance.version > version) {
                 seriesInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                           [message(code: 'series.label', default: 'Series')] as Object[],
@@ -78,26 +77,26 @@ class SeriesController {
             return
         }
 
-		flash.message = message(code: 'default.updated.message', args: [message(code: 'series.label', default: 'Series'), seriesInstance.id])
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'series.label', default: 'Series'), seriesInstance.id])
         redirect(action: "show", id: seriesInstance.id)
     }
 
-    def delete() {
-        def seriesInstance = Series.get(params.id)
+    def delete(Long id) {
+        def seriesInstance = Series.get(id)
         if (!seriesInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'series.label', default: 'Series'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'series.label', default: 'Series'), id])
             redirect(action: "list")
             return
         }
 
         try {
             seriesInstance.delete(flush: true)
-			flash.message = message(code: 'default.deleted.message', args: [message(code: 'series.label', default: 'Series'), params.id])
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'series.label', default: 'Series'), id])
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
-			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'series.label', default: 'Series'), params.id])
-            redirect(action: "show", id: params.id)
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'series.label', default: 'Series'), id])
+            redirect(action: "show", id: id)
         }
     }
 }

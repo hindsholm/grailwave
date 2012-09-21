@@ -10,8 +10,8 @@ class BoatController {
         redirect(action: "list", params: params)
     }
 
-    def list() {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    def list(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
         [boatInstanceList: Boat.list(params), boatInstanceTotal: Boat.count()]
     }
 
@@ -26,14 +26,14 @@ class BoatController {
             return
         }
 
-		flash.message = message(code: 'default.created.message', args: [message(code: 'boat.label', default: 'Boat'), boatInstance.id])
+        flash.message = message(code: 'default.created.message', args: [message(code: 'boat.label', default: 'Boat'), boatInstance.id])
         redirect(action: "show", id: boatInstance.id)
     }
 
-    def show() {
-        def boatInstance = Boat.get(params.id)
+    def show(Long id) {
+        def boatInstance = Boat.get(id)
         if (!boatInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'boat.label', default: 'Boat'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'boat.label', default: 'Boat'), id])
             redirect(action: "list")
             return
         }
@@ -41,10 +41,10 @@ class BoatController {
         [boatInstance: boatInstance]
     }
 
-    def edit() {
-        def boatInstance = Boat.get(params.id)
+    def edit(Long id) {
+        def boatInstance = Boat.get(id)
         if (!boatInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'boat.label', default: 'Boat'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'boat.label', default: 'Boat'), id])
             redirect(action: "list")
             return
         }
@@ -52,16 +52,15 @@ class BoatController {
         [boatInstance: boatInstance]
     }
 
-    def update() {
-        def boatInstance = Boat.get(params.id)
+    def update(Long id, Long version) {
+        def boatInstance = Boat.get(id)
         if (!boatInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'boat.label', default: 'Boat'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'boat.label', default: 'Boat'), id])
             redirect(action: "list")
             return
         }
 
-        if (params.version) {
-            def version = params.version.toLong()
+        if (version != null) {
             if (boatInstance.version > version) {
                 boatInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                           [message(code: 'boat.label', default: 'Boat')] as Object[],
@@ -78,26 +77,26 @@ class BoatController {
             return
         }
 
-		flash.message = message(code: 'default.updated.message', args: [message(code: 'boat.label', default: 'Boat'), boatInstance.id])
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'boat.label', default: 'Boat'), boatInstance.id])
         redirect(action: "show", id: boatInstance.id)
     }
 
-    def delete() {
-        def boatInstance = Boat.get(params.id)
+    def delete(Long id) {
+        def boatInstance = Boat.get(id)
         if (!boatInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'boat.label', default: 'Boat'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'boat.label', default: 'Boat'), id])
             redirect(action: "list")
             return
         }
 
         try {
             boatInstance.delete(flush: true)
-			flash.message = message(code: 'default.deleted.message', args: [message(code: 'boat.label', default: 'Boat'), params.id])
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'boat.label', default: 'Boat'), id])
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
-			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'boat.label', default: 'Boat'), params.id])
-            redirect(action: "show", id: params.id)
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'boat.label', default: 'Boat'), id])
+            redirect(action: "show", id: id)
         }
     }
 }

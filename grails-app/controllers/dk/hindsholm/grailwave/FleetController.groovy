@@ -10,8 +10,8 @@ class FleetController {
         redirect(action: "list", params: params)
     }
 
-    def list() {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    def list(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
         [fleetInstanceList: Fleet.list(params), fleetInstanceTotal: Fleet.count()]
     }
 
@@ -26,14 +26,14 @@ class FleetController {
             return
         }
 
-		flash.message = message(code: 'default.created.message', args: [message(code: 'fleet.label', default: 'Fleet'), fleetInstance.id])
+        flash.message = message(code: 'default.created.message', args: [message(code: 'fleet.label', default: 'Fleet'), fleetInstance.id])
         redirect(action: "show", id: fleetInstance.id)
     }
 
-    def show() {
-        def fleetInstance = Fleet.get(params.id)
+    def show(Long id) {
+        def fleetInstance = Fleet.get(id)
         if (!fleetInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'fleet.label', default: 'Fleet'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'fleet.label', default: 'Fleet'), id])
             redirect(action: "list")
             return
         }
@@ -41,10 +41,10 @@ class FleetController {
         [fleetInstance: fleetInstance]
     }
 
-    def edit() {
-        def fleetInstance = Fleet.get(params.id)
+    def edit(Long id) {
+        def fleetInstance = Fleet.get(id)
         if (!fleetInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'fleet.label', default: 'Fleet'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'fleet.label', default: 'Fleet'), id])
             redirect(action: "list")
             return
         }
@@ -52,16 +52,15 @@ class FleetController {
         [fleetInstance: fleetInstance]
     }
 
-    def update() {
-        def fleetInstance = Fleet.get(params.id)
+    def update(Long id, Long version) {
+        def fleetInstance = Fleet.get(id)
         if (!fleetInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'fleet.label', default: 'Fleet'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'fleet.label', default: 'Fleet'), id])
             redirect(action: "list")
             return
         }
 
-        if (params.version) {
-            def version = params.version.toLong()
+        if (version != null) {
             if (fleetInstance.version > version) {
                 fleetInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                           [message(code: 'fleet.label', default: 'Fleet')] as Object[],
@@ -78,26 +77,26 @@ class FleetController {
             return
         }
 
-		flash.message = message(code: 'default.updated.message', args: [message(code: 'fleet.label', default: 'Fleet'), fleetInstance.id])
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'fleet.label', default: 'Fleet'), fleetInstance.id])
         redirect(action: "show", id: fleetInstance.id)
     }
 
-    def delete() {
-        def fleetInstance = Fleet.get(params.id)
+    def delete(Long id) {
+        def fleetInstance = Fleet.get(id)
         if (!fleetInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'fleet.label', default: 'Fleet'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'fleet.label', default: 'Fleet'), id])
             redirect(action: "list")
             return
         }
 
         try {
             fleetInstance.delete(flush: true)
-			flash.message = message(code: 'default.deleted.message', args: [message(code: 'fleet.label', default: 'Fleet'), params.id])
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'fleet.label', default: 'Fleet'), id])
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
-			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'fleet.label', default: 'Fleet'), params.id])
-            redirect(action: "show", id: params.id)
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'fleet.label', default: 'Fleet'), id])
+            redirect(action: "show", id: id)
         }
     }
 }

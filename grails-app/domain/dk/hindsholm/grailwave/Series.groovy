@@ -12,12 +12,6 @@ class Series {
         organizer blank:false
     }
     
-    Fleet newFleet(name) {
-        def fleet = new Fleet(name:name)
-        fleets << fleet
-        return fleet
-    }
-    
     String toString() {
         name
     }

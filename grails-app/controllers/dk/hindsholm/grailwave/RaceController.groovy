@@ -10,8 +10,8 @@ class RaceController {
         redirect(action: "list", params: params)
     }
 
-    def list() {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    def list(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
         [raceInstanceList: Race.list(params), raceInstanceTotal: Race.count()]
     }
 
@@ -26,14 +26,14 @@ class RaceController {
             return
         }
 
-		flash.message = message(code: 'default.created.message', args: [message(code: 'race.label', default: 'Race'), raceInstance.id])
+        flash.message = message(code: 'default.created.message', args: [message(code: 'race.label', default: 'Race'), raceInstance.id])
         redirect(action: "show", id: raceInstance.id)
     }
 
-    def show() {
-        def raceInstance = Race.get(params.id)
+    def show(Long id) {
+        def raceInstance = Race.get(id)
         if (!raceInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'race.label', default: 'Race'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'race.label', default: 'Race'), id])
             redirect(action: "list")
             return
         }
@@ -41,10 +41,10 @@ class RaceController {
         [raceInstance: raceInstance]
     }
 
-    def edit() {
-        def raceInstance = Race.get(params.id)
+    def edit(Long id) {
+        def raceInstance = Race.get(id)
         if (!raceInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'race.label', default: 'Race'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'race.label', default: 'Race'), id])
             redirect(action: "list")
             return
         }
@@ -52,16 +52,15 @@ class RaceController {
         [raceInstance: raceInstance]
     }
 
-    def update() {
-        def raceInstance = Race.get(params.id)
+    def update(Long id, Long version) {
+        def raceInstance = Race.get(id)
         if (!raceInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'race.label', default: 'Race'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'race.label', default: 'Race'), id])
             redirect(action: "list")
             return
         }
 
-        if (params.version) {
-            def version = params.version.toLong()
+        if (version != null) {
             if (raceInstance.version > version) {
                 raceInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                           [message(code: 'race.label', default: 'Race')] as Object[],
@@ -78,26 +77,26 @@ class RaceController {
             return
         }
 
-		flash.message = message(code: 'default.updated.message', args: [message(code: 'race.label', default: 'Race'), raceInstance.id])
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'race.label', default: 'Race'), raceInstance.id])
         redirect(action: "show", id: raceInstance.id)
     }
 
-    def delete() {
-        def raceInstance = Race.get(params.id)
+    def delete(Long id) {
+        def raceInstance = Race.get(id)
         if (!raceInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'race.label', default: 'Race'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'race.label', default: 'Race'), id])
             redirect(action: "list")
             return
         }
 
         try {
             raceInstance.delete(flush: true)
-			flash.message = message(code: 'default.deleted.message', args: [message(code: 'race.label', default: 'Race'), params.id])
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'race.label', default: 'Race'), id])
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
-			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'race.label', default: 'Race'), params.id])
-            redirect(action: "show", id: params.id)
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'race.label', default: 'Race'), id])
+            redirect(action: "show", id: id)
         }
     }
 }
