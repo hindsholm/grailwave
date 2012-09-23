@@ -1,6 +1,6 @@
 
 <%@ page import="dk.hindsholm.grailwave.Boat" %>
-<!doctype html>
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta name="layout" content="main">

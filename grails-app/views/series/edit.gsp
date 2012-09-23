@@ -1,5 +1,5 @@
 <%@ page import="dk.hindsholm.grailwave.Series" %>
-<!doctype html>
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta name="layout" content="main">

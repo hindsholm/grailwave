@@ -1,5 +1,5 @@
 <%@ page import="dk.hindsholm.grailwave.Person" %>
-<!doctype html>
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta name="layout" content="main">

@@ -1,5 +1,5 @@
 <%@ page import="dk.hindsholm.grailwave.Fleet" %>
-<!doctype html>
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta name="layout" content="main">

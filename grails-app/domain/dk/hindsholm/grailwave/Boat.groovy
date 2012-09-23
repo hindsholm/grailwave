@@ -6,7 +6,7 @@ class Boat {
     String type
     String name
     String sailNumber
-    double rating
+    Double[] rating = []
     String comments
     
     static belongsTo = [ fleet : Fleet ]
@@ -15,6 +15,14 @@ class Boat {
         skipper blank:false
         type blank:false
         sailNumber blank:false
+    }
+    
+    String getRating() {
+        rating.join(',')
+    }
+    
+    void setRating(String s) {
+        rating = s.split(',')*.toDouble()
     }
     
     String toString() {

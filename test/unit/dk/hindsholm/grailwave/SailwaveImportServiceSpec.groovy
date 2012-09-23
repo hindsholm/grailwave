@@ -9,11 +9,12 @@ class SailwaveImportServiceSpec extends Specification {
 
     def "import test"() {
         when:
-        Series series = service.parse(new File("misc/Onsdagssejladser2010.xml"))
+        Series series = service.importSeries(new File("misc/Onsdagssejladser2012.xml"))
 
         then:
         series != null
         series.fleets.size() == 2
+        Fleet.count() == 2
     }
 
 }

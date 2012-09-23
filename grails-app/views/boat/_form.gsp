@@ -50,11 +50,11 @@
 	<g:textField name="name" value="${boatInstance?.name}"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: boatInstance, field: 'rating', 'error')} required">
+<div class="fieldcontain ${hasErrors(bean: boatInstance, field: 'rating', 'error')} ">
 	<label for="rating">
 		<g:message code="boat.rating.label" default="Rating" />
-		<span class="required-indicator">*</span>
+		
 	</label>
-	<g:field name="rating" value="${fieldValue(bean: boatInstance, field: 'rating')}" required=""/>
+	<g:textField name="rating" value="${boatInstance?.rating}"/>
 </div>
 

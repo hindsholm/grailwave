@@ -1,6 +1,6 @@
 
 <%@ page import="dk.hindsholm.grailwave.Race" %>
-<!doctype html>
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta name="layout" content="main">
