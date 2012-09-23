@@ -1,5 +1,14 @@
+*.iws
+*Db.properties
+*Db.script
 *~
+.settings
+/plugins
+/stacktrace.log
 /target
 /target-eclipse
-/stacktrace.log
-
+/web-app/WEB-INF/classes
+/web-app/plugins
+eclipse
+stacktrace.log
+target
