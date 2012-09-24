@@ -4,7 +4,7 @@ import dk.nykredit.grailwave.sailwave.SailwaveImportService
 import spock.lang.Specification
 
 @TestFor(SailwaveImportService)
-@Mock([Series,Fleet,Boat,Person])
+@Mock([Series,Fleet,Boat,Person,Race,Finish])
 class SailwaveImportServiceSpec extends Specification {
 
     def "import test"() {
