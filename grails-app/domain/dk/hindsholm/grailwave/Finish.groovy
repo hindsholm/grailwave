@@ -15,7 +15,6 @@ class Finish {
         DSQ('Disqualification'),
         DNE('Disqualification not excludable under rule 88.3(b)'),
         RDG('Redress given'),
-        OK('Finished OK')
 
         private String description
 
