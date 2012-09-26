@@ -58,7 +58,7 @@
 			<hr>
 
 			<footer>
-				<p>&copy; Company 2011</p>
+				<p>&copy; hindsholm.dk 2012</p>
 			</footer>
 		</div>
 
