@@ -4,8 +4,10 @@ class Race {
     
     String name
     String date
+    String length
+    String windStrength
     
-    static belongsTo = [ series : Series ]
+    static belongsTo = [ fleet : Fleet ]
     static hasMany = [ finishes : Finish ]
     
     static constraints = {

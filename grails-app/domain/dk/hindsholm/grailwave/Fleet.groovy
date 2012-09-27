@@ -5,7 +5,7 @@ class Fleet {
     String name
     
     static belongsTo = [ series : Series ]
-    static hasMany = [ boats : Boat ]
+    static hasMany = [ boats : Boat, races : Race ]
     
     static constraints = {
         name blank:false

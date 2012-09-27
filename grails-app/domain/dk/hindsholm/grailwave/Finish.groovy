@@ -16,7 +16,7 @@ class Finish {
         DNE('Disqualification not excludable under rule 88.3(b)'),
         RDG('Redress given'),
 
-        private String description
+        String description
 
         Code(descr) {
             description = descr
